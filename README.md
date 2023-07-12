@@ -1,0 +1,2 @@
+# Designing-Effective-Liquidity-Mining-Programs-A-Data-Driven-Approach
+This repository contains Python code and Jupyter notebooks which perform a detailed analysis of liquidity Mining incentives. The analysis is inspired by Gauntlet Network's study and is extended to explore different facets of liquidity mining.  The goal of the analysis is to provide insights for designing effective liquidity mining programs. 
