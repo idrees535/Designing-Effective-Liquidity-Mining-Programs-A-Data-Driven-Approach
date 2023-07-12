@@ -137,20 +137,3 @@ def explore_data(df):
 
     return True
 
-# Function to calculate the market share of a pool in terms of TVL
-def calculate_market_share(treatment_data, control_data, start_date, end_date):
-    treatment_tvl = treatment_data[(treatment_data['date'] >= start_date) & (treatment_data['date'] <= end_date)]['tvlUSD'].sum()
-    control_tvl = control_data[(control_data['date'] >= start_date) & (control_data['date'] <= end_date)]['tvlUSD'].sum()
-    total_tvl = treatment_tvl + control_tvl
-    treatment_market_share = treatment_tvl / total_tvl
-    control_market_share = control_tvl / total_tvl
-    return treatment_market_share, control_market_share
-
-# Function to calculate the market share of a pool in terms of feesUSD
-def calculate_fees_market_share(treatment_data, control_data, start_date, end_date):
-    treatment_fees = treatment_data[(treatment_data['date'] >= start_date) & (treatment_data['date'] <= end_date)]['feesUSD'].sum()
-    control_fees = control_data[(control_data['date'] >= start_date) & (control_data['date'] <= end_date)]['feesUSD'].sum()
-    total_fees = treatment_fees + control_fees
-    treatment_fees_market_share = treatment_fees / total_fees
-    control_fees_market_share = control_fees / total_fees
-    return treatment_fees_market_share, control_fees_market_share
