@@ -1,4 +1,10 @@
-# Designing-Effective-Liquidity-Mining-Programs-A-Data-Driven-Approach
+# For Details Refernce Following Articles
+1. https://medium.com/@idrees535/an-analytical-framework-to-design-liquidity-mining-incentives-program-7aab444e3f88
+2.https://medium.com/@idrees535/expanding-gauntlets-liquidity-mining-analysis-towards-an-optimized-framework-for-liquidity-mining-267681da029d
+3. https://medium.com/gauntlet-networks/uniswap-liquidity-mining-analysis-14c739c54a9d
+4. https://gov.uniswap.org/t/uniswap-incentive-design-analysis/21662
+   
+# V1: Designing-Effective-Liquidity-Mining-Programs-A-Data-Driven-Approach
 This repository contains Python code and Jupyter notebooks which perform a detailed analysis of liquidity Mining incentives. The analysis is inspired by Gauntlet Network's study and is extended to explore different facets of liquidity mining.  The goal of the analysis is to provide insights for designing effective liquidity mining programs.
 Expanding Gauntlet's Liquidity Mining Analysis: Towards an Optimized Framework for Liquidity Mining Program Design
 # Background
@@ -75,3 +81,101 @@ The analysis presented here serves as a stepping stone towards a deeper understa
 5. Alternative Metrics: Considering other metrics like the number of active participants in a pool, the number of transactions, or the average transaction size could provide a more comprehensive picture of a pool's performance and response to incentives.
 6. Prediction Modeling: Based on the data, creating a model to predict the impact of future incentive programs could be a valuable tool for protocols planning their next Liquidity Mining Program.
 By further exploring these areas, we can continue to refine and optimize Liquidity Mining Programs, maximizing their effectiveness and benefit to both liquidity providers and the wider DeFi ecosystem.
+
+# V2: Framework to design LM Incentive Program
+The Analytical Framework
+Thesis statement
+
+By inheriting the assumptions of trader and LP elasticity we establish that following indicator is efficient matric of a pool performance. Therefore we can use pool efficiency matrix first to filter pools which we want to incentivize through liquidity mining incentive program. and then we can use this b matrix to estimate the amount of incentives which we want to allocate for each pool.
+
+## Matrices
+
+Our framework for designing liquidity mining incentives is based on the concept of Return on Investment (ROI), defined as:
+
+ROI = (Current Value of Investment−Cost of Investment / Cost of Investment) × 100%
+
+Where:
+
+- Current Value of Investment = TVL (USD) + Fee (USD) + Incentives — Impermanent Loss (IL)
+
+- Cost of Investment = TVL (USD)
+
+For simplicity, we do not incorporate IL in this iteration of the performance matrix. We propose the following matrix as an efficient measure of a pool’s performance:
+
+ROI = Fee (USD) / TVL (USD)
+
+## Assumptions
+LPs and traders are elastic to their returns and execution price respectively
+
+feesUSD/tvlUSD is correct indicatorto measure the performance of Pools
+
+## Limitations
+Following are limitations of this model which will addressed in future versions of this Framework
+
+1. As data of comparative pools is not incorporated in this iteration of framework, so defining baseline ROIand target tvl based on data of uniswap pools is not most efficient approach, hence incorporating data of other dexes will produce much better results
+
+2. TVL growth model was trained on data of optimism uniswap v3 pools, due to very limited dataset the accuracy of tvl growth model will be compromised, by incorporating more data in tvl growth model
+
+3. TVL growth model is not tuned due to absence of validation/dev set, incorporating more data will enable to define a better architecture of LSTM model and tune it’s parameters
+
+## Filtering Pools
+
+We first filter out the pools that are already performing well, as the margin for improvement through incentives is minimal for these pools.
+
+Baseline Performance Analysis
+
+For underperforming pools, we establish a baseline ROI which is used to filter pools, define targeted tvl of pools and for incentive allocation
+
+baseline_roi = avg_monthly_roi
+
+In first iteration of framework design, we are using average monthly roi of top 20 pools as baseline roi standard
+
+
+## Defining Target ROI
+
+The target ROI should be set higher than the baseline ROI to incentivize LPs. The difference between the target and current ROI is the amount of incentives required to achieve the target ROI.
+
+Targeted_ROI = Baseline_ROI + surplus
+
+## Calculating Incentive Allocation
+
+Based on the previous TVL data, we forecast the TVL for the next period (LM incentive period) and calculate the incentive allocation for each pool required to achieve the desired ROI.
+
+Incentive_allocation = differnce_ROI * estimated_tvl
+
+## Evaluating the Effectiveness of LM Incentives
+We propose two models to evaluate the effectiveness of the LM incentives:
+
+1. Target TVL Model: If the TVL of the pool reaches the targeted level, considering the elasticity of traders, the volume will increase, resulting in more fees for LPs. This will allow LPs to achieve surplus ROI during the incentive period and retain their positions even when the incentives are discontinued.
+
+2. TVL Growth Model: This model uses historical data of TVL growth and incentive spend amount to simulate the growth of the TVL during the incentive period.
+
+## TVL Growth Model
+If the potential TVL growth is greater than the targeted TVL, the LM program is considered a success. Otherwise, it is considered a failure.
+
+# Future Work
+Future work is intended to verify the assumptions of this framework and address the limitations of the this Framework by incorporating more data
+
+Incorporate more Data
+1. Incorporate data of competitive pools on other dexes (Curve, Balancer, Sushiswap) to define baseline roi based on comparative data
+
+2. Incorporate more data from liquidity mining programs to train growth model
+
+## Improve TVL Growth Model
+Use a pool-agnostic feature: Instead of using absolute TVL values, use tvl market share feature that is pool-agnostic (Incorporate data of competitive pools).
+
+Feature Engineering: Consider additional features to add that could help the model distinguish between different pools (incentives/tvlUSD, ROI/incentives, adv/Incentives)
+
+As a ratio: Consider incorporating the incentive amount as a ratio with the TVL (Total Value Locked) value. This might make more sense as it gives a relative measure of how large the incentive is compared to the total value locked.
+
+Using it to modify the output: Another approach could be to use the incentive amount to modify the output of the model. For example, train model to predict the change in TVL, and then use (incentives/avg_tvlUSD)*predicted_tvl to modify output
+
+Hybrid Model: A different approach could be to use a hybrid model. In this case, you could use your LSTM model to predict the TVL based on the time series data, and another machine learning model (like a linear regression) to predict the impact of the incentives on the TVL. The final prediction would then be a combination of these two predictions.
+
+Optimize Incentives Allocation by using feedback loop (cadCAD simulations)
+1. Instead of using adv or feesUSD/tvlUSD as performnace matrix, define a more comrehensive performance matrix by incorporating uniswap’s objective function
+
+2. Incorporate feedback of tvl growth model to optimize incentives
+
+# Conclusion
+Designing an effective liquidity mining program is a complex task that requires a deep understanding of market dynamics and participant behavior. This proposed analytical framework provides a systematic approach to this task, offering a robust tool for protocol developers and DeFi enthusiasts. Looking forward to refining this framework for efficient Incentive Design
