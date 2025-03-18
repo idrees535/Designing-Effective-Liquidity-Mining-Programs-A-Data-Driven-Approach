@@ -1,6 +1,6 @@
 # For Details Refernce Following Articles
 1. https://medium.com/@idrees535/an-analytical-framework-to-design-liquidity-mining-incentives-program-7aab444e3f88
-2.https://medium.com/@idrees535/expanding-gauntlets-liquidity-mining-analysis-towards-an-optimized-framework-for-liquidity-mining-267681da029d
+2. https://medium.com/@idrees535/expanding-gauntlets-liquidity-mining-analysis-towards-an-optimized-framework-for-liquidity-mining-267681da029d
 3. https://medium.com/gauntlet-networks/uniswap-liquidity-mining-analysis-14c739c54a9d
 4. https://gov.uniswap.org/t/uniswap-incentive-design-analysis/21662
    
